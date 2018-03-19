@@ -10,9 +10,9 @@ const int EMPTY = 0;
 /* Function declarations */
 void inputBoard(int board[][N*N]);
 void insertBoard(int board[][N*N], int row, int col, int value);
-/* bool checkRow(int board[][N*N], int row, int col, int value); */
-/* bool checkCol(int board[][N*N], int row, int col, int value); */
-/* bool checkSquare(int board[][N*N], int row, int col, int value); */
+bool checkRow(int board[][N*N], int row, int col, int value);
+bool checkCol(int board[][N*N], int row, int col, int value);
+bool checkSquare(int board[][N*N], int row, int col, int value);
 /* bool checkBoard(int board[][N*N]); */
 void printBoard(const int board[][N*N]);
 
@@ -54,23 +54,59 @@ void inputBoard(int board[][N*N]){
 
 /* Insert value into board */
 void insertBoard(int board[][N*N], int row, int col, int value){
+    for (int row = 0; row < (N*N); row++){
+        for (int col = 0; col < (N*N); col++){
+            if (board[row][col] == EMPTY){
+                for (value = 0; value < (N*N); value++){
+                    board[row][col] = value;
+                    if ((checkCol(board, row, col, value)) && (checkRow(board, row, col, value)) && (checkSquare(board, row, col, value))){
+                            /* if (checkBoard(int board[][N*N], int row, int col, int value)){ */
+                                printBoard(board);
+                            /* } */
+                    }
+                }
+            }
+            else{
+                continue;
+            }
+        }
+    }
 }
 
 /* Check row is valid */
 bool checkRow(int board[][N*N], int row, int col, int value){
+    for (int i = 0; i < (N*N); i++){
+        if ((i != row) && (board[i][col] == value))
+                return false;
+        return true;
+    }
 }
 
 /* Check col is valid */
 bool checkCol(int board[][N*N], int row, int col, int value){
+    for (int i = 0; i < (N*N); i++){
+        if ((i != col) && (board[row][i] == value))
+            return false;
+        return true;
+    }
 }
 
 /* Check square is valid */
 bool checkSquare(int board[][N*N], int row, int col, int value){
+    int rowCorner = (row / N) * N;
+    int colCorner = (col / N) * N;
+    for (int i = rowCorner; i < (rowCorner + N); i++){
+        for (int j = colCorner; j < (colCorner + N); j++){
+            if (( i != row || j != col) && board[i][j] == value)
+                return false;
+        }
+    }
+    return true;
 }
 
 /* Check entire board */
-bool checkBoard(int board[][N*N], int row, int col, int value){
-}
+/* bool checkBoard(int board[][N*N], int row, int col, int value){ */
+/* } */
 
 /* Print solved board */
 void printBoard(const int board[][N*N]){
